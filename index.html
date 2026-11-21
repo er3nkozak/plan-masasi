@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Plan Masası</title>
+<meta name="theme-color" content="#F3F5F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1116" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Plan Masası">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Giriş ekranı -->
+<section id="login" class="login" hidden>
+  <form id="login-form" class="login-card" novalidate>
+    <div class="login-mark" aria-hidden="true"></div>
+    <h1>Plan Masası</h1>
+    <p class="login-sub">Devam etmek için giriş yap.</p>
+    <div class="field"><label for="l-email">E-posta</label><input id="l-email" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="l-pass">Şifre</label><input id="l-pass" type="password" autocomplete="current-password" required></div>
+    <p class="login-msg" id="l-msg" role="status"></p>
+    <button class="primary big" type="submit" id="l-submit">Giriş yap</button>
+    <button class="linkbtn" type="button" id="l-forgot">Şifremi unuttum</button>
+  </form>
+</section>
+
+<!-- Uygulama -->
+<div id="app" class="wrap" hidden>
+  <header class="bar">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><h1>Plan Masası</h1><span class="sync" id="sync"></span></div>
+    <div class="tabs" role="group" aria-label="Görünüm">
+      <button data-v="gun">Gün</button><button data-v="hafta">Hafta</button><button data-v="ay">Ay</button><button data-v="yil">Yıl</button>
+    </div>
+    <div class="nav">
+      <button class="iconbtn" id="prev" aria-label="Önceki">‹</button>
+      <button class="ghost" id="todayBtn">Bugün</button>
+      <button class="iconbtn" id="next" aria-label="Sonraki">›</button>
+      <button class="ghost" id="projBtn">Projeler</button>
+      <button class="iconbtn" id="setBtn" aria-label="Ayarlar">⚙</button>
+      <button class="primary" id="addBtn">+ İş ekle</button>
+    </div>
+  </header>
+
+  <div id="notice"></div>
+  <h2 class="period" id="period"></h2>
+
+  <section class="focus">
+    <div class="panel">
+      <p class="label"><span id="goalLabel">Hedefler</span><span class="pace-sum" id="paceSum"></span></p>
+      <div id="goalRows" class="goalrows"></div>
+      <form class="goaladd" id="goal-form">
+        <select id="g-type" aria-label="Hedef türü"></select>
+        <input id="g-num" type="number" min="1" max="999" value="3" aria-label="Hedef sayısı">
+        <button class="ghost" type="submit">Hedef ekle</button>
+      </form>
+    </div>
+    <div class="panel">
+      <p class="label"><span id="noteLabel">Notlar</span><span id="noteState"></span></p>
+      <textarea class="goals" id="notes" aria-label="Bu dönemin notları"></textarea>
+      <p class="label" style="margin-top:12px"><span>Proje dağılımı</span><span class="progress" id="progress"></span></p>
+      <div class="mix" id="mix"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <div class="board">
+    <main id="view"></main>
+    <aside class="ideas" data-drop="idea">
+      <p class="label"><span>Fikir kutusu</span><span id="ideaCount"></span></p>
+      <form id="idea-form"><input id="idea-in" placeholder="Bir fikir yaz, Enter'a bas" maxlength="140" autocomplete="off"></form>
+      <div class="idealist" id="ideaList"></div>
+      <p class="hint">Bir fikri takvimde bir güne sürükleyerek planla.</p>
+    </aside>
+  </div>
+</div>
+
+<div id="boot" class="boot">Yükleniyor…</div>
+<div id="modal"></div>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script type="module" src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>

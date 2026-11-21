@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Her kullanıcı sadece kendi klasörünü okuyup yazabilir.
+    // Ek güvenlik: sadece senin e-postanla giriş yapan hesap erişebilir.
+    // Aşağıdaki e-postayı kendi e-postanla değiştir.
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null
+        && request.auth.uid == uid
+        && request.auth.token.email == "SENIN_EPOSTAN@ornek.com";
+    }
+  }
+}
